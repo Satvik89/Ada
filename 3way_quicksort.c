@@ -1,32 +1,51 @@
 #include <stdio.h>
+void swap(int a, int b){
+    int temp;
+    temp = a;
+    a = b;  
+    b = temp;
+}
 
-int partition(int arr[10], int low, int high){
-    int pivot = arr[high],i=low,j,temp;
-    for(j=low;j<high;j++){
-        if(arr[j]<pivot){
-            temp=arr[i];
-            arr[i]=arr[j];
-            arr[j]=temp;
+void quicksort(int arr[], int low, int high) {
+    if (low >= high) {
+        return;
+    }
+
+    if (arr[high] < arr[low]) {
+        swap(arr[high], arr[low]);
+    }
+
+    int pivot1 = arr[low];
+    int pivot2 = arr[high];
+
+    int i = low + 1;
+    int lt = low + 1;
+    int gt = high - 1;
+
+    while (i <= gt) {
+        if (arr[i] < pivot1) {
+            swap(arr[i], arr[lt]);
+            lt++;
+            i++;
+        } else if (arr[i] > pivot2) {
+            swap(arr[i], arr[gt]);
+            gt--;
+        } else {
             i++;
         }
     }
-    temp=arr[i];
-    arr[i]=arr[high];
-    arr[high]=temp;
-    return i;
+
+    swap(arr[low], arr[lt - 1]);
+    swap(arr[high], &arr[gt + 1]);
+
+    quicksort(arr, low, lt - 2);
+    quicksort(arr, gt + 2, high);
+
+    if (gt - lt > 0) {
+        quicksort(arr, lt, gt);
+    }
 }
 
-void quicksort(int arr[10], int low, int high){
-    int mid=(low+high)/2;
-    if(low<high){
-        int pi=partition(arr,low,mid);
-        int pi2= partition(arr,mid+1,high);
-    quicksort(arr,low,pi-1);
-    quicksort(arr,pi+1,pi2-1);
-    quicksort(arr,pi2+1,high);
-  
-}
-}
 
 
 int main(){
